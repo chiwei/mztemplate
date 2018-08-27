@@ -1,42 +1,22 @@
 from docxtpl import DocxTemplate
-import var.jbvar
+from sqliteconv import loadfromCSV
+import sqlite3
 tpl=DocxTemplate('./doc/1.docx')
-curMth=3
-totalExp=3257.1
-flzc=325.6
-jzzc=22.5
-cdzc=3215
-ndzc=552.5
-ntzc=45
-zjzc=20
-lszc=455
-tEYOY=-20
-flzcYOY=32
-jzzcYOY=33
-cdzcYOY=35
-ndzcYOY=-40
-ntzcYOY=45
-zjzcYOY=50
-lszcYOY=-60
+loadfromCSV('outputjb18.csv')
+curMth=6
+conn=sqlite3.connect('cmd.db')
+cursor=conn.execute('select csdbrs from jbdata where sq="06" and qhdm="000000000000"')
+print(cursor.row[0])
+'''#
 context={
     'curMth':curMth,
-    'totalExp':totalExp,
-    'flzc':flzc,
-    'jzzc':jzzc,
-    'cdzc':cdzc,
-    'ndzc':ndzc,
-    'ntzc':ntzc,
-    'zjzc':zjzc,
-    'lszc':lszc,
-    'tEYOY':tEYOY,
-    'flzcYOY':flzcYOY,
-    'jzzcYOY':jzzcYOY,
-    'cdzcYOY':cdzcYOY,
-    'ndzcYOY':ndzcYOY,
-    'ntzcYOY':ntzcYOY,
-    'zjzcYOY':zjzcYOY,
-    'lszcYOY':lszcYOY,
+    'csdbrs':csdbrs,
+    'csdbhs':csdbhs,
+    'ncdbrs':ncdbrs,
+    'ncdbhs':ncdbhs,
+
 }
 
 tpl.render(context)
-tpl.save("./doc/2.docx")
+tpl.save("./doc/db.docx")
+#'''

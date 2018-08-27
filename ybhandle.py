@@ -1,8 +1,10 @@
 import csv
+import numpy as np
+import pandas as pd
+
 
 filename='./output/jb18.csv'
-with open(filename) as f:
-    reader=csv.reader(f)
-    #print(list(reader))
-    for row in reader:
-        print(reader.line_num,row)
+
+df=pd.DataFrame(pd.read_csv(filename))
+print(df.info())
+print(df.head())
