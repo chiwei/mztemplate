@@ -28,7 +28,7 @@ def loadfromCSV(csvpath):
           print(row)
           data.append(row)
    print('data object created.')
-   conn=sqlite3.connect("cmd.db")
+   conn=sqlite3.connect("cmder.db")
    conn.execute('''create table if not exists jbdata(
                           qhdm varchar(32),
                           sq varchar(32),
