@@ -1,8 +1,12 @@
 from docxtpl import DocxTemplate
 from utils.sqliteconv import wrapperSelector
 
-tpl=DocxTemplate('./docTpl/db.docx')
+PERIOD='201806'
+PrePERIOD='201803'
+tpl=DocxTemplate('./docTpl/jbTPL1.docx')
 #loadfromCSV('outputjb18.csv')
+
+#def docRender(tplPath
 curMth=6
 SQ="06"
 preSQ="03"

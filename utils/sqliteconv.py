@@ -2,23 +2,27 @@ import os
 import sqlite3
 import csv
 
+DBPATH='../DBs/'
+
 def createConn(dbName):
-    if os.path.exists(dbName+'.db'):
+    if os.path.exists(DBPATH+dbName+'.db'):
         print('database exists.')
     else:
         conn=sqlite3.connect(dbName+'.db')
         print('database '+dbName+' created!')
         return dbName+'.db'
 
-def wrapperSelector(indexName,SQ):
-    conn=sqlite3.connect("cmder.db")
-    sql='select {indexName} from jbdata where SQ="{SQ}" and qhdm="000000000000"'.format(indexName=indexName,SQ=SQ)
+def wrapperSelector(MatchedIndex,Period,qhdm):
+    conn=sqlite3.connect(DBPATH+"mzdata.db")
+    sql='select Value from DataWarehouse where Period="{Period}" \
+        and qhdm="{qhdm}" and MatchedIndex="{MatchedIndex}"'.format(MatchedIndex=MatchedIndex,Period=Period,qhdm=qhdm)
     cursor=conn.execute(sql)
     for row in cursor:
-        pass
-    print(indexName+"`s value is "+str(row[0]))
+        print(row[0])
+    conn.close()
     return row[0]
 
+wrapperSelector('EXP_EXP','201803','000000000000')
 def loadfromCSV(csvpath):
    data=[]
    with open(csvpath,'r') as csvfile:
@@ -46,5 +50,3 @@ def loadfromCSV(csvpath):
    print('DBF insert completed.')
    conn.close()
    print('database closed.')
-print(wrapperSelector("ncdbhs","06"))
-#loadfromCSV("outputjb18.csv")
