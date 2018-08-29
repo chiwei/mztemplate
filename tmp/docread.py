@@ -1,5 +1,5 @@
 from docx import Document
-docStr=Document('./doc/1.docx')
+docStr=Document('./docTpl/1.docx')
 for paragraph in docStr.paragraphs:
     parStr=paragraph.text
     print(parStr)

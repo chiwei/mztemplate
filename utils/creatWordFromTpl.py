@@ -1,8 +1,7 @@
 from docxtpl import DocxTemplate
-from sqliteconv import loadfromCSV
-from sqliteconv import wrapperSelector
-import sqlite3
-tpl=DocxTemplate('./doc/db.docx')
+from utils.sqliteconv import wrapperSelector
+
+tpl=DocxTemplate('./docTpl/db.docx')
 #loadfromCSV('outputjb18.csv')
 curMth=6
 SQ="06"
@@ -29,4 +28,4 @@ context={
 }
 
 tpl.render(context)
-tpl.save("./doc/dbresult.docx")
+tpl.save("./docTpl/dbresult.docx")

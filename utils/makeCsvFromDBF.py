@@ -1,7 +1,7 @@
 from dbfread import DBF
 import time
 
-dbfpath='./data/jb18.dbf'
+dbfpath='./DBF/jb18.dbf'
 csvpath='./output/jb18.csv'
 curYear=2018
 headerpath='./output/headder.csv'

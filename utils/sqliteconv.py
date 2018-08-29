@@ -23,11 +23,11 @@ def loadfromCSV(csvpath):
    data=[]
    with open(csvpath,'r') as csvfile:
        filereader=csv.reader(csvfile)
-       print('start to create data object.')
+       print('start to create DBF object.')
        for row in filereader:
           print(row)
           data.append(row)
-   print('data object created.')
+   print('DBF object created.')
    conn=sqlite3.connect("cmder.db")
    conn.execute('''create table if not exists jbdata(
                           qhdm varchar(32),
@@ -39,11 +39,11 @@ def loadfromCSV(csvpath):
                 );''')
    conn.execute('delete from jbdata')
    statement="insert into jbdata values(?,?,?,?,?,?)"
-   print('start data inserting.')
+   print('start DBF inserting.')
    conn.executemany(statement,data)
    conn.execute("delete from jbdata where qhdm='qhdm'")
    conn.commit()
-   print('data insert completed.')
+   print('DBF insert completed.')
    conn.close()
    print('database closed.')
 print(wrapperSelector("ncdbhs","06"))
