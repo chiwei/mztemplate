@@ -22,7 +22,7 @@ def wrapperSelector(MatchedIndex,Period,qhdm):
     conn.close()
     return row[0]
 
-wrapperSelector('EXP_EXP','201803','000000000000')
+
 def loadfromCSV(csvpath):
    data=[]
    with open(csvpath,'r') as csvfile:
@@ -50,3 +50,36 @@ def loadfromCSV(csvpath):
    print('DBF insert completed.')
    conn.close()
    print('database closed.')
+
+def valueCoupleList(Period,DivTimes):
+    VCL={}
+    conn=sqlite3.connect(DBPATH+'mzdata.db')
+    sql='select MatchedIndex,Value from DataWarehouse where qhdm="000000000000" and Period="{Period}"'.format(Period=Period)
+    cursor=conn.execute(sql)
+    for item in cursor:
+        if DivTimes!=1:
+            VCL[item[0]]=round(item[1]/DivTimes,1)
+        else:
+            VCL[item[0]]=int(item[1])
+    if VCL=={}:
+        print("Data not found in period {Period}".format(Period=Period))
+    return VCL
+
+def calcChain(curPeriod,prePeriod):
+    chain={}
+    curData=valueCoupleList(curPeriod,1)
+    preData=valueCoupleList(prePeriod,1)
+    for key in curData:
+        chain[key+'_H']=round((curData[key]-preData[key])/preData[key]*100,1)
+    return chain
+
+def calcYOY(curYear,preYear):
+    YOY={}
+    curData=valueCoupleList(curYear,1)
+    preData=valueCoupleList(preYear,1)
+    for key in curData:
+        YOY[key+'_T']=round((curData[key]-preData[key])/preData[key]*100,1)
+    return YOY
+
+print(calcChain('201806','201803'))
+

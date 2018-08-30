@@ -1,35 +1,21 @@
 from docxtpl import DocxTemplate
-from utils.sqliteconv import wrapperSelector
+from utils.sqliteconv import valueCoupleList
+from utils.sqliteconv import calcChain
+TPLPATH='../docTpl/1.docx'
+RSTPATH='../docTpl/dbresult.docx'
 
-PERIOD='201806'
-PrePERIOD='201803'
-tpl=DocxTemplate('./docTpl/jbTPL1.docx')
-#loadfromCSV('outputjb18.csv')
+def renderDocx(tplPath,curPeriod,prePeriod,divTimes):
+    tpl=DocxTemplate(tplPath)
+    chain=calcChain(curPeriod,prePeriod)
+    context=valueCoupleList(curPeriod,divTimes)
+    for key in chain:
+        context[key]=chain[key]
+    if curPeriod[4]=='0':
+        context['curMth']=curPeriod[5]
+    else:
+        context['curMth']=curPeriod[4:6]
+    tpl.render(context)
+    tpl.save(RSTPATH)
+    print('Template rendered.')
 
-#def docRender(tplPath
-curMth=6
-SQ="06"
-preSQ="03"
-csdbrs=round(wrapperSelector("csdbrs",SQ)/10000,1)
-csdbrsTB=round((wrapperSelector("csdbrs",SQ)-wrapperSelector("csdbrs",preSQ))/wrapperSelector("csdbrs",preSQ)*100,1)
-csdbhs=round(wrapperSelector("csdbhs",SQ)/10000,1)
-csdbhsTB=round((wrapperSelector("csdbhs",SQ)-wrapperSelector("csdbhs",preSQ))/wrapperSelector("csdbhs",preSQ)*100,1)
-ncdbrs=round(wrapperSelector("ncdbrs",SQ)/10000,1)
-ncdbrsTB=round((wrapperSelector("ncdbrs",SQ)-wrapperSelector("ncdbrs",preSQ))/wrapperSelector("ncdbrs",preSQ)*100,1)
-ncdbhs=round(wrapperSelector("ncdbhs",SQ)/10000,1)
-ncdbhsTB=round((wrapperSelector("ncdbhs",SQ)-wrapperSelector("ncdbhs",preSQ))/wrapperSelector("ncdbhs",preSQ)*100,1)
-context={
-    'curMth':curMth,
-    'csdbrs':csdbrs,
-    'csdbrsTB':csdbrsTB,
-    'csdbhs':csdbhs,
-    'csdbhsTB':csdbhsTB,
-    'ncdbrs':ncdbrs,
-    'ncdbrsTB':ncdbrsTB,
-    'ncdbhs':ncdbhs,
-    'ncdbhsTB':ncdbhsTB,
-
-}
-
-tpl.render(context)
-tpl.save("./docTpl/dbresult.docx")
+renderDocx(TPLPATH,'201806','201803',10000)
