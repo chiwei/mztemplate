@@ -77,6 +77,7 @@ def calcYOY(curYear,preYear):
     YOY={}
     curData=valueCoupleList(curYear,1)
     preData=valueCoupleList(preYear,1)
+    print(curData)
     for key in curData:
         YOY[key+'_T']=round((curData[key]-preData[key])/preData[key]*100,1)
     return YOY
