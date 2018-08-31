@@ -1,6 +1,6 @@
 import os
 import sqlite3
-import csv
+import pandas
 
 DBPATH='../DBs/'
 
@@ -22,8 +22,8 @@ def wrapperSelector(MatchedIndex,Period,qhdm):
     conn.close()
     return row[0]
 
-
-def loadfromCSV(csvpath):
+'''DEPRACATED METHOD###
+   def loadfromCSV(csvpath):
    data=[]
    with open(csvpath,'r') as csvfile:
        filereader=csv.reader(csvfile)
@@ -33,14 +33,14 @@ def loadfromCSV(csvpath):
           data.append(row)
    print('DBF object created.')
    conn=sqlite3.connect("cmder.db")
-   conn.execute('''create table if not exists jbdata(
+   conn.execute(create table if not exists jbdata(
                           qhdm varchar(32),
                           sq varchar(32),
                           csdbrs number,
                           csdbhs number,
                           ncdbrs number,
                           ncdbhs number
-                );''')
+                );)
    conn.execute('delete from jbdata')
    statement="insert into jbdata values(?,?,?,?,?,?)"
    print('start DBF inserting.')
@@ -50,6 +50,12 @@ def loadfromCSV(csvpath):
    print('DBF insert completed.')
    conn.close()
    print('database closed.')
+   ####DEPRECATED METHOD ABOVE
+'''
+def insertIntoDB(csvFile):
+    conn=sqlite3.connect(DBPATH+'mzdata.db')
+    cf=pandas.read_csv(csvFile)
+    cf.to_sql('DataWarehouse',conn,if_exists='append',index=False)
 
 def valueCoupleList(Period,DivTimes):
     VCL={}

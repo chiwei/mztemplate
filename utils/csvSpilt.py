@@ -19,8 +19,8 @@ def csvSpilt(frmFile,toFile):
     convertFile.close()
     return
 
-f='../output/headder.csv'
-t='./tester.csv'
+f='../output/result201712.csv'
+t='./2017.csv'
 #csvSpilt(f,t)
 if __name__=='builtins':
     csvSpilt(f,t)
