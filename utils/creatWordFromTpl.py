@@ -1,7 +1,7 @@
 from docxtpl import DocxTemplate
-from utils.sqliteconv import valueCoupleList
-from utils.sqliteconv import calcChain
-from utils.sqliteconv import calcYOY
+from tmp.sqliteconv import valueCoupleList
+from tmp.sqliteconv import calcChain
+from tmp.sqliteconv import calcYOY
 TPLPATH='../docTpl/jbTPL1.docx'
 RSTPATH='../docTpl/dbresult.docx'
 
@@ -22,4 +22,4 @@ def renderDocx(tplPath,curPeriod,prePeriod,preYear,divTimes):
     tpl.save(RSTPATH)
     print('Template rendered.')
 
-renderDocx(TPLPATH,'201806','201803','201806',10000)
+renderDocx(TPLPATH,'201806','201803','201706',10000)
