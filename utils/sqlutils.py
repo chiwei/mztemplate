@@ -16,7 +16,7 @@ class getDB:
     def get_conn(self):
         try:
             conn = MySQLdb.connect(host=self.host,db=self.db,user=self.user,passwd=self.passwd,charset=self.charset)
-            print('Connect Success')
+            print('Connect database successfully.')
             return conn
         except Exception as e:
             print('%s',e)
@@ -33,20 +33,19 @@ def wrapperSelector(MatchedIndex,Period,qhdm):
     return result[0]
 
 
-print(wrapperSelector('ZHN_RGN','201712','000000000000'))
 def valueCoupleList(Period):
     VCL = {}
     conn = getDB()
-    sql='select MatchedIndex,Value from DataWarehouse where qhdm="000000000000" and Period="{Period}"'.format(Period=Period)
+    sql='select MatchedIndex,Value,UnitTimes from DataWarehouse where qhdm="000000000000" and Period="{Period}"'.format(Period=Period)
     cursor=conn.get_conn().cursor()
     cursor.execute(sql)
     for item in cursor:
-            print(item)
-            VCL[item[0]]=item[1]
+            print(item[0],item[1],item[2])
+            VCL[item[0]]=item[1]/item[2]
     if VCL=={}:
         print("Data not found in period {Period}".format(Period=Period))
     return VCL
-
+valueCoupleList(201806)
 def calcChain(curPeriod,prePeriod):
     chain={}
     curData=valueCoupleList(curPeriod)
@@ -64,6 +63,6 @@ def calcYOY(curYear,preYear):
         if preData[key]!=0:
             YOY[key+'_T']=round((curData[key]-preData[key])/preData[key]*100,1)
     return YOY
-
-print(calcChain('201806','201803'))
+print(calcYOY('201806','201706'))
+#print(calcChain('201806','201803'))
 

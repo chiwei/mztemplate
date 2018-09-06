@@ -1,15 +1,15 @@
 from docxtpl import DocxTemplate
-from tmp.sqliteconv import valueCoupleList
-from tmp.sqliteconv import calcChain
-from tmp.sqliteconv import calcYOY
+from utils.sqlutils import valueCoupleList
+from utils.sqlutils import calcChain
+from utils.sqlutils import calcYOY
 TPLPATH='../docTpl/jbTPL1.docx'
 RSTPATH='../docTpl/dbresult.docx'
 
-def renderDocx(tplPath,curPeriod,prePeriod,preYear,divTimes):
+def renderDocx(tplPath,curPeriod,prePeriod,preYear):
     tpl=DocxTemplate(tplPath)
     chain=calcChain(curPeriod,prePeriod)
     yoy=calcYOY(curPeriod,preYear)
-    context=valueCoupleList(curPeriod,divTimes)
+    context=valueCoupleList(curPeriod)
     for key in chain:
         context[key]=chain[key]
     for key in yoy:
@@ -22,4 +22,4 @@ def renderDocx(tplPath,curPeriod,prePeriod,preYear,divTimes):
     tpl.save(RSTPATH)
     print('Template rendered.')
 
-renderDocx(TPLPATH,'201806','201803','201706',10000)
+renderDocx(TPLPATH,'201806','201803','201706')
