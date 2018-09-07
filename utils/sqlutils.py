@@ -36,16 +36,14 @@ def wrapperSelector(MatchedIndex,Period,qhdm):
 def valueCoupleList(Period):
     VCL = {}
     conn = getDB()
-    sql='select MatchedIndex,Value,UnitTimes from DataWarehouse where qhdm="000000000000" and Period="{Period}"'.format(Period=Period)
+    sql = 'select t.IndexID, d.Value, t.UnitTimes from datawarehouse d, indexdict t where t.DbfId = d.DbfId and d.Year=t.Year and qhdm="000000000000" and d.Period="{Period}"'.format(Period=Period)
     cursor=conn.get_conn().cursor()
     cursor.execute(sql)
     for item in cursor:
-            print(item[0],item[1],item[2])
             VCL[item[0]]=item[1]/item[2]
     if VCL=={}:
         print("Data not found in period {Period}".format(Period=Period))
     return VCL
-valueCoupleList(201806)
 def calcChain(curPeriod,prePeriod):
     chain={}
     curData=valueCoupleList(curPeriod)
@@ -64,5 +62,5 @@ def calcYOY(curYear,preYear):
             YOY[key+'_T']=round((curData[key]-preData[key])/preData[key]*100,1)
     return YOY
 print(calcYOY('201806','201706'))
-#print(calcChain('201806','201803'))
+print(calcChain('201806','201803'))
 
