@@ -3,8 +3,8 @@ from utils.sqlutils import valueCoupleList
 from utils.sqlutils import calcChain
 from utils.sqlutils import calcYOY
 
-TPLPATH = '../docTpl/jbTPL1.docx'
-RSTPATH = '../docTpl/dbresult.docx'
+TPLPATH = '../docTpl/page1_yb.docx'
+RSTPATH = '../docTpl/output/ybresult1.docx'
 
 
 def renderDocx(tplPath, curPeriod, prePeriod, preYear):
@@ -12,6 +12,8 @@ def renderDocx(tplPath, curPeriod, prePeriod, preYear):
     chain = calcChain(curPeriod, prePeriod)
     yoy = calcYOY(curPeriod, preYear)
     context = valueCoupleList(curPeriod)
+    for key in context:
+        context[ key ] = round(context[key],1)
     for key in chain:
         context[ key ] = chain[ key ]
     for key in yoy:
@@ -25,4 +27,4 @@ def renderDocx(tplPath, curPeriod, prePeriod, preYear):
     print('Template rendered.')
 
 
-renderDocx(TPLPATH, '201806', '201803', '201706')
+renderDocx(TPLPATH, '201808', '201807', '201708')
